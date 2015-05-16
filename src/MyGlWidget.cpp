@@ -152,7 +152,14 @@ void  myGLWidget::createArea(){
 
 int  myGLWidget::readFile(char * from){
 	ifstream input(from);
-    
+    if( ! input.is_open() ){
+        QMessageBox readError;
+        QString desc(tr("Ошибка во время чтения файла: "));
+        readError.setText(desc+from);
+        readError.exec();
+        return 1;
+    }
+ 
 	input >> nElements >> nInds;//считываем количество элементов и узлов
 
 	createArea();//создаем массивы

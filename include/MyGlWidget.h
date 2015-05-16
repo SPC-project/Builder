@@ -8,6 +8,7 @@
 #include <QtGui/QMouseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QString>
 #include <qdebug.h>
 
 #include <QMainWindow>
