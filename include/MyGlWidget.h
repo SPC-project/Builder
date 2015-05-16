@@ -62,7 +62,7 @@ public:
 	public slots:
 	void      setStandartLook();//вернуться в стандартную позицию
 	void      getProection(int side);//повернуть фигуру одной из проекций 1-6
-	void      readFile(char * from);
+	int       readFile(char * from);
 
 
 private:
