@@ -1,0 +1,22 @@
+<RCC>
+    <qresource>
+        <file>icons/3d-axis.png</file>
+        <file>icons/about_author.png</file>
+        <file>icons/arrow_down.png</file>
+        <file>icons/arrow_left.png</file>
+        <file>icons/arrow_right.png</file>
+        <file>icons/arrow_up.png</file>
+        <file>icons/ax.png</file>
+        <file>icons/camera.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/doDefMethod.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/figure.png</file>
+        <file>icons/file.png</file>
+        <file>icons/grid.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/zoom_out.png</file>
+        <file>icons/zoom_in.png</file>
+    </qresource>
+</RCC>
