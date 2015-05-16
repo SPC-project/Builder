@@ -279,12 +279,14 @@ void Window::openFile(){
 }
 
 void Window::createGlWidget(){
-
 	if (glLoaded)//если уже что-то построили - удаляем
 		delete glWidget;
 
 	glWidget = new myGLWidget;//создаем новый виджет
-	glWidget->readFile(Input->toUtf8().data());//грузим фигуру, какую скажут (или по умолчанию)
+	int status = glWidget->readFile(Input->toUtf8().data());//грузим фигуру, какую скажут (или по умолчанию)
+    if( status != 0 ){
+        return;
+    }
 	ui.glWidgetArea->setWidget(glWidget);//передаем виджет в окно
 	glWidget->updateGL();//рисуем
 

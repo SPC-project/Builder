@@ -6,14 +6,14 @@ using namespace std;
 void myGLWidget::initializeGL()
 {
 
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);//цвет фона
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);//С†РІРµС‚ С„РѕРЅР°
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
-	glMatrixMode(GL_PROJECTION);//загружаем матрицы проекции
+	glMatrixMode(GL_PROJECTION);//Р·Р°РіСЂСѓР¶Р°РµРј РјР°С‚СЂРёС†С‹ РїСЂРѕРµРєС†РёРё
 	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);//и пмодели-просмотра
+	glMatrixMode(GL_MODELVIEW);//Рё РїРјРѕРґРµР»Рё-РїСЂРѕСЃРјРѕС‚СЂР°
 }
 
 void myGLWidget::paintGL()
@@ -21,20 +21,20 @@ void myGLWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	gluLookAt(amAtX, amAtY, -10.f, seeAtX, seeAtY, 0.0f, 0.0f, 1.0f, 0.0f);//устанавливаем место расположение камеры и обозреваемую точку
-	glRotatef(x_angle, 0.0f, 1.0f, 0.0f);//устанавливаем наклон фигуры относительно осей
+	gluLookAt(amAtX, amAtY, -10.f, seeAtX, seeAtY, 0.0f, 0.0f, 1.0f, 0.0f);//СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РјРµСЃС‚Рѕ СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ РєР°РјРµСЂС‹ Рё РѕР±РѕР·СЂРµРІР°РµРјСѓСЋ С‚РѕС‡РєСѓ
+	glRotatef(x_angle, 0.0f, 1.0f, 0.0f);//СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅР°РєР»РѕРЅ С„РёРіСѓСЂС‹ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РѕСЃРµР№
 	glRotatef(y_angle, 1.0f, 0.0f, 0.0f);
 	glRotatef(z_angle, 0.0f, 0.0f, 1.0f);
 
-	glScalef(factorZoom*(-1), factorZoom, factorZoom);//масштабируем фигуру
+	glScalef(factorZoom*(-1), factorZoom, factorZoom);//РјР°СЃС€С‚Р°Р±РёСЂСѓРµРј С„РёРіСѓСЂСѓ
 
 
 	if (drawfig)
-		drawFigure();//рисуем фигуру
+		drawFigure();//СЂРёСЃСѓРµРј С„РёРіСѓСЂСѓ
 	if (drawgr)
-		drawGrid();//сетку
+		drawGrid();//СЃРµС‚РєСѓ
 	if (drawax)
-		drawAxis();//оси
+		drawAxis();//РѕСЃРё
 
 
 
@@ -61,37 +61,37 @@ QGLWidget(parent)
 	amAtY = 5.0f;
 	drawgr = 1;
 	drawfig = 1;
-	drawax = 0;//по умолчанию оси не рисуем
+	drawax = 0;//РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РѕСЃРё РЅРµ СЂРёСЃСѓРµРј
 }
 
 
 
 void myGLWidget::mouseMoveEvent(QMouseEvent * me)
 {
-	/*Проверка сильно большого отклонения - например, чтобы сцена не
-	самовращалась при сворачивании-разворачивании окна, при
-	перемещении на большое расстояние курсора с отпускнием и т.д.
-	Не есть обязательным - но так естественнее*/
+	/*РџСЂРѕРІРµСЂРєР° СЃРёР»СЊРЅРѕ Р±РѕР»СЊС€РѕРіРѕ РѕС‚РєР»РѕРЅРµРЅРёСЏ - РЅР°РїСЂРёРјРµСЂ, С‡С‚РѕР±С‹ СЃС†РµРЅР° РЅРµ
+	СЃР°РјРѕРІСЂР°С‰Р°Р»Р°СЃСЊ РїСЂРё СЃРІРѕСЂР°С‡РёРІР°РЅРёРё-СЂР°Р·РІРѕСЂР°С‡РёРІР°РЅРёРё РѕРєРЅР°, РїСЂРё
+	РїРµСЂРµРјРµС‰РµРЅРёРё РЅР° Р±РѕР»СЊС€РѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РєСѓСЂСЃРѕСЂР° СЃ РѕС‚РїСѓСЃРєРЅРёРµРј Рё С‚.Рґ.
+	РќРµ РµСЃС‚СЊ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рј - РЅРѕ С‚Р°Рє РµСЃС‚РµСЃС‚РІРµРЅРЅРµРµ*/
 
 	if (abs(me->x() - mouse_x) >= 20)
 		mouse_x = me->x();
 	if (abs(me->y() - mouse_y) >= 20)
 		mouse_y = me->y();
-	//Меняем угол поворота в зависимости от положения мыши
+	//РњРµРЅСЏРµРј СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РїРѕР»РѕР¶РµРЅРёСЏ РјС‹С€Рё
 	y_angle += (mouse_y - me->y()) / 2;
 	x_angle -= (mouse_x - me->x()) / 2;
-	//Сохраняем текущее значение координат курсора для возможности определения
-	//скорости их изменения.
+	//РЎРѕС…СЂР°РЅСЏРµРј С‚РµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РєСѓСЂСЃРѕСЂР° РґР»СЏ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РѕРїСЂРµРґРµР»РµРЅРёСЏ
+	//СЃРєРѕСЂРѕСЃС‚Рё РёС… РёР·РјРµРЅРµРЅРёСЏ.
 	mouse_x = me->x();
 	mouse_y = me->y();
-	//Вызываем метод, который обработает поворот и выведет обновленное изображение
+	//Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ, РєРѕС‚РѕСЂС‹Р№ РѕР±СЂР°Р±РѕС‚Р°РµС‚ РїРѕРІРѕСЂРѕС‚ Рё РІС‹РІРµРґРµС‚ РѕР±РЅРѕРІР»РµРЅРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
 
 	updateGL();
 }
 
 void myGLWidget::drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){
 
-	//выбираем значение цвета для данного узла   и рисуем его
+	//РІС‹Р±РёСЂР°РµРј Р·РЅР°С‡РµРЅРёРµ С†РІРµС‚Р° РґР»СЏ РґР°РЅРЅРѕРіРѕ СѓР·Р»Р°   Рё СЂРёСЃСѓРµРј РµРіРѕ
 	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
 	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
 	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
@@ -125,18 +125,18 @@ void myGLWidget::drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int
 
 void  myGLWidget::wheelEvent(QWheelEvent* pe){
 
-	//В зависимости от направления движения колесика увеличиваем/уменьшаем фигуру
+	//Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РЅР°РїСЂР°РІР»РµРЅРёСЏ РґРІРёР¶РµРЅРёСЏ РєРѕР»РµСЃРёРєР° СѓРІРµР»РёС‡РёРІР°РµРј/СѓРјРµРЅСЊС€Р°РµРј С„РёРіСѓСЂСѓ
 	if ((pe->delta())>0)
 		factorZoom *= 1.1f;
 	else if ((pe->delta())<0)
 		factorZoom /= 1.1f;
 
-	updateGL();//перерисовываем сцену
+	updateGL();//РїРµСЂРµСЂРёСЃРѕРІС‹РІР°РµРј СЃС†РµРЅСѓ
 
 }
 
 void  myGLWidget::createArea(){
-	//создаем массивы
+	//СЃРѕР·РґР°РµРј РјР°СЃСЃРёРІС‹
 	inds = new int*[nElements];
 	for (int i = 0; i < nElements; i++)
 		inds[i] = new int[8];
@@ -146,19 +146,25 @@ void  myGLWidget::createArea(){
 	potent = new double[nInds];
 	for (int i = 0; i < nInds; i++){
 		koor[i] = new GLfloat[3];
-		potent[i] = 0;//обнуляем массив напряжений на случай, если напряжения не заданы
+		potent[i] = 0;//РѕР±РЅСѓР»СЏРµРј РјР°СЃСЃРёРІ РЅР°РїСЂСЏР¶РµРЅРёР№ РЅР° СЃР»СѓС‡Р°Р№, РµСЃР»Рё РЅР°РїСЂСЏР¶РµРЅРёСЏ РЅРµ Р·Р°РґР°РЅС‹
 	}
 }
 
-void  myGLWidget::readFile(char * from){
-
+int  myGLWidget::readFile(char * from){
 	ifstream input(from);
+    if( ! input.is_open() ){
+        QMessageBox readError;
+        QString desc(tr("РћС€РёР±РєР° РІРѕ РІСЂРµРјСЏ С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°: "));
+        readError.setText(desc+from);
+        readError.exec();
+        return 1;
+    }
 
-	input >> nElements >> nInds;//считываем количество элементов и узлов
+	input >> nElements >> nInds;//СЃС‡РёС‚С‹РІР°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ Рё СѓР·Р»РѕРІ
 
-	createArea();//создаем массивы
+	createArea();//СЃРѕР·РґР°РµРј РјР°СЃСЃРёРІС‹
 
-	//считываем данные
+	//СЃС‡РёС‚С‹РІР°РµРј РґР°РЅРЅС‹Рµ
 	for (int i = 0; i < nElements; i++)
 		for (int j = 0; j < 8; j++)
 			input >> inds[i][j];
@@ -171,56 +177,56 @@ void  myGLWidget::readFile(char * from){
 		input >> potent[i];
 
 
-	gradColorStep = setColorStep();//выбираем градацию цветов
-
+	gradColorStep = setColorStep();//РІС‹Р±РёСЂР°РµРј РіСЂР°РґР°С†РёСЋ С†РІРµС‚РѕРІ
+    return 0;
 }
 
 void myGLWidget::drawAxis()
 {
 
 	glLineWidth(3.0f);
-	// до вызова команды ширина равна 9 пикселю по умолчанию
+	// РґРѕ РІС‹Р·РѕРІР° РєРѕРјР°РЅРґС‹ С€РёСЂРёРЅР° СЂР°РІРЅР° 9 РїРёРєСЃРµР»СЋ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 
-	// устанавливаем цвет последующих примитивов
+	// СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С†РІРµС‚ РїРѕСЃР»РµРґСѓСЋС‰РёС… РїСЂРёРјРёС‚РёРІРѕРІ
 	glColor4f(1.00f, 0.00f, 0.00f, 1.0f);
-	// ось x красного цвета
-	glBegin(GL_LINES); // построение линии
-	glVertex3f(9.0f, 0.0f, 0.0f); // первая точка
-	glVertex3f(-9.0f, 0.0f, 0.0f); // вторая точка
+	// РѕСЃСЊ x РєСЂР°СЃРЅРѕРіРѕ С†РІРµС‚Р°
+	glBegin(GL_LINES); // РїРѕСЃС‚СЂРѕРµРЅРёРµ Р»РёРЅРёРё
+	glVertex3f(9.0f, 0.0f, 0.0f); // РїРµСЂРІР°СЏ С‚РѕС‡РєР°
+	glVertex3f(-9.0f, 0.0f, 0.0f); // РІС‚РѕСЂР°СЏ С‚РѕС‡РєР°
 	glEnd();
 
 	QColor halfGreen(0, 128, 0, 255);
 	qglColor(halfGreen);
 	glBegin(GL_LINES);
-	// ось y зеленого цвета
+	// РѕСЃСЊ y Р·РµР»РµРЅРѕРіРѕ С†РІРµС‚Р°
 	glVertex3f(0.0f, 9.0f, 0.0f);
 	glVertex3f(0.0f, -9.0f, 0.0f);
 
 	glColor4f(0.00f, 0.00f, 1.00f, 9.0f);
-	// ось z синего цвета
+	// РѕСЃСЊ z СЃРёРЅРµРіРѕ С†РІРµС‚Р°
 	glVertex3f(0.0f, 0.0f, 9.0f);
 	glVertex3f(0.0f, 0.0f, -9.0f);
 	glEnd();
 	/*
-		перемещение локальных координат 
-		над
-		сделать.
-		пздц
+		РїРµСЂРµРјРµС‰РµРЅРёРµ Р»РѕРєР°Р»СЊРЅС‹С… РєРѕРѕСЂРґРёРЅР°С‚ 
+		РЅР°Рґ
+		СЃРґРµР»Р°С‚СЊ.
+		РїР·РґС†
 	*/
 
 }
 
 void myGLWidget::drawFigure(){
-	//рисуем четырехугольники
+	//СЂРёСЃСѓРµРј С‡РµС‚С‹СЂРµС…СѓРіРѕР»СЊРЅРёРєРё
 	glBegin(GL_QUADS);
-	for (int i = nElements - 1; i >= 0; i--)//поочередно отрисовываем все элементы
+	for (int i = nElements - 1; i >= 0; i--)//РїРѕРѕС‡РµСЂРµРґРЅРѕ РѕС‚СЂРёСЃРѕРІС‹РІР°РµРј РІСЃРµ СЌР»РµРјРµРЅС‚С‹
 		drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
-	//отнимаем единицу, т.к.  нумерация с 1, а не с 0
+	//РѕС‚РЅРёРјР°РµРј РµРґРёРЅРёС†Сѓ, С‚.Рє.  РЅСѓРјРµСЂР°С†РёСЏ СЃ 1, Р° РЅРµ СЃ 0
 	glEnd();
 }
 
 void myGLWidget::drawGrid(){
-	//толщина 2 пикселя, черный цвет
+	//С‚РѕР»С‰РёРЅР° 2 РїРёРєСЃРµР»СЏ, С‡РµСЂРЅС‹Р№ С†РІРµС‚
 	glLineWidth(2.0f);
 	glColor3f(0.0f, 0.0f, 0.0f);
 
@@ -230,9 +236,9 @@ void myGLWidget::drawGrid(){
 }
 
 void myGLWidget::drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){
-	glBegin(GL_LINE_STRIP);//выбираем замкнутые линии
+	glBegin(GL_LINE_STRIP);//РІС‹Р±РёСЂР°РµРј Р·Р°РјРєРЅСѓС‚С‹Рµ Р»РёРЅРёРё
 
-	//рисуем сетку
+	//СЂРёСЃСѓРµРј СЃРµС‚РєСѓ
 	glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
 	glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
 	glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
@@ -255,10 +261,10 @@ void myGLWidget::drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2,
 
 void myGLWidget::setColor(double value){
 	int c1, c2, c3;//c1 - start color, c2 - middle color, c3 - finish  color
-	int state = (int)((value - minPotent) / gradColorStep);//находим цвет соответствующий данному значению
+	int state = (int)((value - minPotent) / gradColorStep);//РЅР°С…РѕРґРёРј С†РІРµС‚ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ РґР°РЅРЅРѕРјСѓ Р·РЅР°С‡РµРЅРёСЋ
 
 	if (state <= 255){
-		c1 = 255;//от чисто синего 
+		c1 = 255;//РѕС‚ С‡РёСЃС‚Рѕ СЃРёРЅРµРіРѕ 
 		c2 = state;
 		c3 = 0;
 	}
@@ -266,19 +272,19 @@ void myGLWidget::setColor(double value){
 		c1 = 512 - state;
 		c2 = 255;
 		c3 = 0;
-	}//до зеленого
+	}//РґРѕ Р·РµР»РµРЅРѕРіРѕ
 	else if (state > 512 && state < 768){
-		c1 = 0;//от зеленого
+		c1 = 0;//РѕС‚ Р·РµР»РµРЅРѕРіРѕ
 		c2 = 255;
 		c3 = state;
 	}
 	else{
 		c1 = 0;
 		c2 = 1024 - state;
-		c3 = 255;//до красного
+		c3 = 255;//РґРѕ РєСЂР°СЃРЅРѕРіРѕ
 	}
 
-	glColor3ub(c3, c2, c1);//задаем выбранный цвет
+	glColor3ub(c3, c2, c1);//Р·Р°РґР°РµРј РІС‹Р±СЂР°РЅРЅС‹Р№ С†РІРµС‚
 }
 
 double myGLWidget::setColorStep(){
@@ -290,12 +296,12 @@ double myGLWidget::setColorStep(){
 			max = potent[i];
 		if (potent[i] < min)
 			min = potent[i];
-	}//находим минимальное и максимальное значение
+	}//РЅР°С…РѕРґРёРј РјРёРЅРёРјР°Р»СЊРЅРѕРµ Рё РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
 
 	minPotent = min;
 	maxPotent = max;
 
-	return (max - min) / 1024;//возвращаем шаг напряженностей одного тона цвета
+	return (max - min) / 1024;//РІРѕР·РІСЂР°С‰Р°РµРј С€Р°Рі РЅР°РїСЂСЏР¶РµРЅРЅРѕСЃС‚РµР№ РѕРґРЅРѕРіРѕ С‚РѕРЅР° С†РІРµС‚Р°
 }
 
 void myGLWidget::zoom(bool plus){
@@ -381,7 +387,7 @@ void myGLWidget::move_y(bool up){
 
 
 void myGLWidget::setStandartLook(){
-	amAtX = 0.0f;//задаем стандартную позицию камеры и фигуры
+	amAtX = 0.0f;//Р·Р°РґР°РµРј СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ РїРѕР·РёС†РёСЋ РєР°РјРµСЂС‹ Рё С„РёРіСѓСЂС‹
 	amAtY = 5.0f;
 	seeAtX = 0.0f;
 	seeAtY = 0.0f;
