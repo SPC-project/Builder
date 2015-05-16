@@ -159,8 +159,8 @@ int  myGLWidget::readFile(char * from){
         readError.exec();
         return 1;
     }
- 
-	input >> nElements >> nInds;//считываем количество элементов и узлов
+
+    input >> nElements >> nInds;//считываем количество элементов и узлов
 
 	createArea();//создаем массивы
 
