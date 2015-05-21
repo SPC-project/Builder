@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)  # Поверка версии cmake
 project(Builder)
 
-# Назначим переменные для сборки проекта
+# Определяем флаги сборки
 set(DEBUG_FLAGS "-g -Og -pipe -Wall -pedantic -std=gnu++11")
 set(RELEASE_FLAGS "-O2 -pipe -std=gnu++11 -march=native")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
