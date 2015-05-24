@@ -1,7 +1,6 @@
 #include "MyGlWidget.h"
 #include <cmath>
-
-using namespace std;
+#include <fstream>
 
 void myGLWidget::initializeGL()
 {
@@ -14,8 +13,9 @@ void myGLWidget::initializeGL()
 	glMatrixMode(GL_PROJECTION);//загружаем матрицы проекции
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);//и пмодели-просмотра
-}
 
+
+}
 void myGLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -34,8 +34,10 @@ void myGLWidget::paintGL()
 	if (drawgr)
 		drawGrid();//сетку
 	if (drawax)
+	{
+		drawPoints();
 		drawAxis();//оси
-
+	}
 
 
 }
@@ -69,7 +71,7 @@ QGLWidget(parent)
 void myGLWidget::mouseMoveEvent(QMouseEvent * me)
 {
 	/*Проверка сильно большого отклонения - например, чтобы сцена не
-	самовращалась при сворачивании-разворачивании окна, при
+	самовращалась при сворачивании-розварачивании окна, при
 	перемещении на большое расстояние курсора с отпускнием и т.д.
 	Не есть обязательным - но так естественнее*/
 
@@ -84,6 +86,8 @@ void myGLWidget::mouseMoveEvent(QMouseEvent * me)
 	//скорости их изменения.
 	mouse_x = me->x();
 	mouse_y = me->y();
+
+	
 	//Вызываем метод, который обработает поворот и выведет обновленное изображение
 
 	updateGL();
@@ -148,10 +152,12 @@ void  myGLWidget::createArea(){
 		koor[i] = new GLfloat[3];
 		potent[i] = 0;//обнуляем массив напряжений на случай, если напряжения не заданы
 	}
+
+
 }
 
-int  myGLWidget::readFile(char * from){
-	ifstream input(from);
+int myGLWidget::readFile(char * from){
+    std::ifstream input(from);
     if( ! input.is_open() ){
         QMessageBox readError;
         QString desc(tr("Ошибка во время чтения файла: "));
@@ -160,7 +166,7 @@ int  myGLWidget::readFile(char * from){
         return 1;
     }
 
-    input >> nElements >> nInds;//считываем количество элементов и узлов
+	input >> nElements >> nInds;//считываем количество элементов и узлов
 
 	createArea();//создаем массивы
 
@@ -208,7 +214,7 @@ void myGLWidget::drawAxis()
 	glVertex3f(0.0f, 0.0f, -9.0f);
 	glEnd();
 	/*
-		перемещение локальных координат 
+		перемещение локальных поординат 
 		над
 		сделать.
 		пздц
@@ -219,11 +225,57 @@ void myGLWidget::drawAxis()
 void myGLWidget::drawFigure(){
 	//рисуем четырехугольники
 	glBegin(GL_QUADS);
-	for (int i = nElements - 1; i >= 0; i--)//поочередно отрисовываем все элементы
-		drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
+	for (int i = nElements - 1; i >= 0; i--)
+	{//поочередно отрисовываем все элементы
+		drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1,
+			inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
+		
+		
+	}
 	//отнимаем единицу, т.к.  нумерация с 1, а не с 0
 	glEnd();
+	
 }
+
+void myGLWidget::drawPoints(){
+	for (int i = nElements - 1; i >= 0; i--)
+	{
+		drawPointElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1,
+			inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
+
+	}
+}
+
+void myGLWidget::drawPointElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){
+	//рисуем сетку
+	glPointSize(8);
+	glEnable(GL_POINT_SMOOTH);
+	glBegin(GL_POINTS);
+	glColor3d(255, 0, 200);
+	glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
+	glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
+	glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
+	glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
+	glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
+
+	glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
+	glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
+	glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
+	glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
+
+	glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
+	glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
+	glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
+	glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
+	glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
+
+	
+
+	glEnd();
+
+
+}
+
 
 void myGLWidget::drawGrid(){
 	//толщина 2 пикселя, черный цвет
@@ -231,7 +283,8 @@ void myGLWidget::drawGrid(){
 	glColor3f(0.0f, 0.0f, 0.0f);
 
 	for (int i = 0; i < nElements; i++)
-		drawGridElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
+		drawGridElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1,
+		inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
 
 }
 
@@ -434,3 +487,4 @@ void myGLWidget::getProection(int side){
 
 	updateGL();
 }
+

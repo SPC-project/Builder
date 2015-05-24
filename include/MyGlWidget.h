@@ -37,6 +37,7 @@ public:
 	void      drawAxis();//прорисовка осей
 	void      drawFigure();//прорисовка фигуры
 	void      drawGrid();//прорисовка сетки
+	void      drawPoints();
 
 
 	void      zoom(bool plus);
@@ -53,6 +54,7 @@ public:
 	bool      drawgr;//флаги отрисовки сетки, фигуры и осей
 	bool      drawfig;
 	bool      drawax;
+	bool      drawdot;
 	bool      move_cam;
 	bool      changeNC;
 	double    minPotent;//минимальное значение напряженности
@@ -69,6 +71,7 @@ public:
 private:
 	void      drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4); //прорисовка 1го элемента
 	void      drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);//прорисовка 1 ячейки сетки
+	void      drawPointElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);// Прорисовка одной точки
 	void      createArea();//инициализируем массивы
 	void      mouseMoveEvent(QMouseEvent*me);
 	void      setColor(double value);//выбор цвета узла

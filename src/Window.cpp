@@ -1,4 +1,4 @@
-﻿#include <Window.h>
+#include <Window.h>
 #include <QtGui>
 
 //Часть кода, сгенерированного в дизайнере, находится в файле ui_opgl.h 
@@ -9,6 +9,7 @@ Window::Window(){
 
 	glLoaded = 0;
 
+    // Указываем явно кодировку этого файла, чтобы Qt корректно отображала символы 
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8")); //русский язык
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf-8"));
@@ -245,6 +246,9 @@ void Window::changeMode(){
 		if (ui.axis->isChecked() != glWidget->drawax)
 			glWidget->drawax = ui.axis->isChecked();
 
+		//if (ui.points->isChecked() != glWidget->drawdot)
+		//glWidget->drawdot = ui.points->isChecked();
+
 
 		glWidget->updateGL();
 	}
@@ -279,6 +283,7 @@ void Window::openFile(){
 }
 
 void Window::createGlWidget(){
+
 	if (glLoaded)//если уже что-то построили - удаляем
 		delete glWidget;
 
@@ -298,7 +303,7 @@ void Window::createGlWidget(){
 
 void Window::delGL(){
 	if (glLoaded)
-		delete glWidget;//сносим виджет
+		delete glWidget;//сносим виджжет
 	ui.blueValue->setText("");//удаляем подписи на линии градиентов
 	ui.redValue->setText("");
 	ui.greenValue->setText("");
@@ -315,4 +320,3 @@ void Window::showAutor(){
 		"                 Харьков 2014", QMessageBox::Cancel);
 
 }
-//КУРСАЧ НАПИСАН! ^______________^
