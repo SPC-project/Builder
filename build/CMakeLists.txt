@@ -43,7 +43,7 @@ target_link_libraries( ${prog_name} ${QT_LIBRARIES} ${OPENGL_LIBRARIES})
 
 IF(WIN32) # Check if we are on Windows
   if(MSVC) # Check if we are using the Visual Studio compiler
-    set_target_properties(TestProject PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+    set_target_properties(${prog_name} PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
   elseif(CMAKE_COMPILER_IS_GNUCXX)
     # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows") # Not tested
   else()
