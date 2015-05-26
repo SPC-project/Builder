@@ -29,77 +29,77 @@ public:
 	explicit myGLWidget(QWidget *parent = 0);
 
 public:
-	void      initializeGL(); // функция инициализации OpenGL
-	void      resizeGL(int w, int h); //функция обработки изменения размера вывода
-	void      paintGL(); // функция прорисовки
+	void      initializeGL(); // С„СѓРЅРєС†РёСЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё OpenGL
+	void      resizeGL(int w, int h); //С„СѓРЅРєС†РёСЏ РѕР±СЂР°Р±РѕС‚РєРё РёР·РјРµРЅРµРЅРёСЏ СЂР°Р·РјРµСЂР° РІС‹РІРѕРґР°
+	void      paintGL(); // С„СѓРЅРєС†РёСЏ РїСЂРѕСЂРёСЃРѕРІРєРё
 
 
-	void      drawAxis();//прорисовка осей
-	void      drawFigure();//прорисовка фигуры
-	void      drawGrid();//прорисовка сетки
+	void      drawAxis();//РїСЂРѕСЂРёСЃРѕРІРєР° РѕСЃРµР№
+	void      drawFigure();//РїСЂРѕСЂРёСЃРѕРІРєР° С„РёРіСѓСЂС‹
+	void      drawGrid();//РїСЂРѕСЂРёСЃРѕРІРєР° СЃРµС‚РєРё
 	void      drawPoints();
 
 
 	void      zoom(bool plus);
-	void      rotate_x(bool clockwise, GLfloat angle = 0.15);//повернуть фигуру вокруг x
-	void      rotate_y(bool clockwise, GLfloat angle = 0.15);//повернуть фигуру вокруг у
-	void      rotate_z(bool clockwise, GLfloat angle = 0.15);//повернуть вокруг z
-	void      move_x(bool left);//переиестить камеру по х
-	void      move_y(bool up);//переместить камеру по у
-	void      see_x(bool left);//переместить обозреваемую точку по х
-	void      see_y(bool up);//переместить обозреваемую точку по у
+	void      rotate_x(bool clockwise, GLfloat angle = 0.15);//РїРѕРІРµСЂРЅСѓС‚СЊ С„РёРіСѓСЂСѓ РІРѕРєСЂСѓРі x
+	void      rotate_y(bool clockwise, GLfloat angle = 0.15);//РїРѕРІРµСЂРЅСѓС‚СЊ С„РёРіСѓСЂСѓ РІРѕРєСЂСѓРі Сѓ
+	void      rotate_z(bool clockwise, GLfloat angle = 0.15);//РїРѕРІРµСЂРЅСѓС‚СЊ РІРѕРєСЂСѓРі z
+	void      move_x(bool left);//РїРµСЂРµРёРµСЃС‚РёС‚СЊ РєР°РјРµСЂСѓ РїРѕ С…
+	void      move_y(bool up);//РїРµСЂРµРјРµСЃС‚РёС‚СЊ РєР°РјРµСЂСѓ РїРѕ Сѓ
+	void      see_x(bool left);//РїРµСЂРµРјРµСЃС‚РёС‚СЊ РѕР±РѕР·СЂРµРІР°РµРјСѓСЋ С‚РѕС‡РєСѓ РїРѕ С…
+	void      see_y(bool up);//РїРµСЂРµРјРµСЃС‚РёС‚СЊ РѕР±РѕР·СЂРµРІР°РµРјСѓСЋ С‚РѕС‡РєСѓ РїРѕ Сѓ
 	void      move_only_cam_x(bool left);
 	void      move_only_cam_y(bool up);
 
-	bool      drawgr;//флаги отрисовки сетки, фигуры и осей
+	bool      drawgr;//С„Р»Р°РіРё РѕС‚СЂРёСЃРѕРІРєРё СЃРµС‚РєРё, С„РёРіСѓСЂС‹ Рё РѕСЃРµР№
 	bool      drawfig;
 	bool      drawax;
 	bool      drawdot;
 	bool      move_cam;
 	bool      changeNC;
-	double    minPotent;//минимальное значение напряженности
-	double    maxPotent;//максимальное значение напряженности
-	double    gradColorStep;//шаг напряженность соответствующий 1 тону цвета
+	double    minPotent;//РјРёРЅРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РЅР°РїСЂСЏР¶РµРЅРЅРѕСЃС‚Рё
+	double    maxPotent;//РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РЅР°РїСЂСЏР¶РµРЅРЅРѕСЃС‚Рё
+	double    gradColorStep;//С€Р°Рі РЅР°РїСЂСЏР¶РµРЅРЅРѕСЃС‚СЊ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ 1 С‚РѕРЅСѓ С†РІРµС‚Р°
 
 
 	public slots:
-	void      setStandartLook();//вернуться в стандартную позицию
-	void      getProection(int side);//повернуть фигуру одной из проекций 1-6
+	void      setStandartLook();//РІРµСЂРЅСѓС‚СЊСЃСЏ РІ СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ РїРѕР·РёС†РёСЋ
+	void      getProection(int side);//РїРѕРІРµСЂРЅСѓС‚СЊ С„РёРіСѓСЂСѓ РѕРґРЅРѕР№ РёР· РїСЂРѕРµРєС†РёР№ 1-6
 	int       readFile(char * from);
 
 
 private:
-	void      drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4); //прорисовка 1го элемента
-	void      drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);//прорисовка 1 ячейки сетки
-	void      drawPointElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);// Прорисовка одной точки
-	void      createArea();//инициализируем массивы
+	void      drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4); //РїСЂРѕСЂРёСЃРѕРІРєР° 1РіРѕ СЌР»РµРјРµРЅС‚Р°
+	void      drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);//РїСЂРѕСЂРёСЃРѕРІРєР° 1 СЏС‡РµР№РєРё СЃРµС‚РєРё
+	void      drawPointElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4);// РџСЂРѕСЂРёСЃРѕРІРєР° РѕРґРЅРѕР№ С‚РѕС‡РєРё
+	void      createArea();//РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РјР°СЃСЃРёРІС‹
 	void      mouseMoveEvent(QMouseEvent*me);
-	void      setColor(double value);//выбор цвета узла
-	double    setColorStep();//задание шага соответствия напряженность-цвет
+	void      setColor(double value);//РІС‹Р±РѕСЂ С†РІРµС‚Р° СѓР·Р»Р°
+	double    setColorStep();//Р·Р°РґР°РЅРёРµ С€Р°РіР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ РЅР°РїСЂСЏР¶РµРЅРЅРѕСЃС‚СЊ-С†РІРµС‚
 
-	GLfloat   x_angle;//значения поворота фигуры относительно осей
+	GLfloat   x_angle;//Р·РЅР°С‡РµРЅРёСЏ РїРѕРІРѕСЂРѕС‚Р° С„РёРіСѓСЂС‹ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РѕСЃРµР№
 	GLfloat   y_angle;
 	GLfloat   z_angle;
-	GLfloat   seeAtX;//координаты обозреваемой точки
+	GLfloat   seeAtX;//РєРѕРѕСЂРґРёРЅР°С‚С‹ РѕР±РѕР·СЂРµРІР°РµРјРѕР№ С‚РѕС‡РєРё
 	GLfloat   seeAtY;
-	GLfloat   amAtX;//координаты расположения камеры
+	GLfloat   amAtX;//РєРѕРѕСЂРґРёРЅР°С‚С‹ СЂР°СЃРїРѕР»РѕР¶РµРЅРёСЏ РєР°РјРµСЂС‹
 	GLfloat   amAtY;
 
-	GLfloat   camY; //верх камеры Y
-	GLfloat   camX; //верх камеры X
+	GLfloat   camY; //РІРµСЂС… РєР°РјРµСЂС‹ Y
+	GLfloat   camX; //РІРµСЂС… РєР°РјРµСЂС‹ X
 
 
-	GLfloat   factorZoom;//множитель для масштабирования
-	int       nElements; // количество элементов
-	int       nInds;//количество узлов
+	GLfloat   factorZoom;//РјРЅРѕР¶РёС‚РµР»СЊ РґР»СЏ РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёСЏ
+	int       nElements; // РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ
+	int       nInds;//РєРѕР»РёС‡РµСЃС‚РІРѕ СѓР·Р»РѕРІ
 
-	double    mouse_x;//координаты мышки 
+	double    mouse_x;//РєРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€РєРё 
 	double    mouse_y;
 
 
-	int**     inds;//матрица элементов
-	GLfloat** koor;//матрица координат
-	double*   potent;//вектор напряжений в узлах
+	int**     inds;//РјР°С‚СЂРёС†Р° СЌР»РµРјРµРЅС‚РѕРІ
+	GLfloat** koor;//РјР°С‚СЂРёС†Р° РєРѕРѕСЂРґРёРЅР°С‚
+	double*   potent;//РІРµРєС‚РѕСЂ РЅР°РїСЂСЏР¶РµРЅРёР№ РІ СѓР·Р»Р°С…
 
 protected:
 	void      wheelEvent(QWheelEvent* pe);

@@ -26,7 +26,7 @@ protected:
 
 private:
 	Ui::ToolsPanelClass ui;
-	bool         glLoaded;//флаг существований gl виджета
+	bool         glLoaded;//С„Р»Р°Рі СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёР№ gl РІРёРґР¶РµС‚Р°
 
 
 	myGLWidget*  glWidget;
