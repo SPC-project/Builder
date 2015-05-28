@@ -10,9 +10,7 @@ Window::Window(){
 	glLoaded = 0;
 
     // Указываем явно кодировку этого файла, чтобы Qt корректно отображала символы 
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8")); //русский язык
-	QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf-8"));
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf-8"));
 
 	ui.figure->setChecked(1);//чекбоксы
 	ui.grid->setChecked(1); 
@@ -191,16 +189,17 @@ void Window::keyPressEvent(QKeyEvent* pe)
 }
 
 void Window::zoom(){
-	if (glLoaded)
+    if (glLoaded) {
 		//находим, от какой из кнопок отправлен сигнал и приближаем/отдаляем
 		if (this->sender() == ui.zoomP)
 			glWidget->zoom(1);
 		else if (this->sender() == ui.zoomM)
 			glWidget->zoom(0);
+    }
 }
 
 void Window::rotate(){
-	if (glLoaded)
+    if (glLoaded) {
 		//тоже находим кнопку-отправителя сигнала
 		if (this->sender() == ui.xLeft)
 			glWidget->rotate_x(0, 1);
@@ -214,11 +213,11 @@ void Window::rotate(){
 			glWidget->rotate_z(0, 1);
 		else if (this->sender() == ui.zRight)
 			glWidget->rotate_z(1, 1);
-
+    }
 }
 
 void Window::getProection(){
-	if (glLoaded)
+    if (glLoaded) {
 		//ну вы поняли
 		if (this->sender() == ui.pr1)
 			glWidget->getProection(1);
@@ -231,7 +230,8 @@ void Window::getProection(){
 		else if (this->sender() == ui.pr5)
 			glWidget->getProection(5);
 		else if (this->sender() == ui.pr6)
-			glWidget->getProection(6);
+            glWidget->getProection(6);\
+    }
 }
 
 void Window::changeMode(){
