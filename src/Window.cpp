@@ -52,7 +52,7 @@ Window::Window(){
 	ui.glLineArea->setWidget(colorLine);//передаем ее в окно
 
 	this->setFixedSize(947, 680);
-	this->setWindowTitle("Builder");
+	this->setWindowTitle(trUtf8("Builder"));
 
 	//коннектим кнопочки
 	connect(ui.pr1, SIGNAL(clicked()), this, SLOT(getProection()));
@@ -258,8 +258,8 @@ void Window::SnapShot(){
 	if (glLoaded){
 		glWidget->paintGL();//прорисовываем сцену еще разочек
 		QImage i = glWidget->grabFrameBuffer();//копируем буффер в картинку
-		QString str = QFileDialog::getSaveFileName(this, tr("Save File"), "",
-			tr(" Images (*.png; *.bmp; *.jpg)"));//спрашиваем куда сохраняем
+		QString str = QFileDialog::getSaveFileName(this, trUtf8("Save File"), "",
+			trUtf8(" Images (*.png; *.bmp; *.jpg)"));//спрашиваем куда сохраняем
 		QString format;
 		if (str.endsWith("jpg", Qt::CaseInsensitive))//определяем, в каком формате
 			format = "JPEG";
@@ -274,8 +274,8 @@ void Window::SnapShot(){
 
 void Window::openFile(){
 
-	QString fname = QFileDialog::getOpenFileName(this, tr("Открыть"), "",
-		tr("Transformer Files (*.transf)"));//спрашиваем, из какого файла читаем
+	QString fname = QFileDialog::getOpenFileName(this, trUtf8("Открыть"), "",
+		trUtf8("Transformer Files (*.transf)"));//спрашиваем, из какого файла читаем
 	if (fname != ""){//если нам указали путь
 		Input = new QString(fname);//запоминаем его
 		createGlWidget();//строим gl 
@@ -313,10 +313,10 @@ void Window::delGL(){
 
 void Window::showAutor(){
 	//Собственно, ваш покорный слуга
-	QMessageBox::information(this, "Об Авторе",
-		"Автор программы: Ермаков Даниэль.\n"
+	QMessageBox::information(this, trUtf8("Об Авторе"),
+		trUtf8("Автор программы: Ермаков Даниэль.\n"
 		"  E-Mail: dan-ermakov@rambler.ru\n"
 		"        НТУ ХПИ. Кафедра СПУ. \n"
-		"                 Харьков 2014", QMessageBox::Cancel);
+		"                 Харьков 2014"), QMessageBox::Cancel);
 
 }

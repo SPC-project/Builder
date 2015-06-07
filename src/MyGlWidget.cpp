@@ -4,7 +4,6 @@
 
 void myGLWidget::initializeGL()
 {
-
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);//цвет фона
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
@@ -13,8 +12,6 @@ void myGLWidget::initializeGL()
 	glMatrixMode(GL_PROJECTION);//загружаем матрицы проекции
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);//и пмодели-просмотра
-
-
 }
 void myGLWidget::paintGL()
 {
