@@ -2,10 +2,26 @@
 #include <cmath>
 #include <fstream>
 
+
+myGLWidget::myGLWidget(QWidget *parent) : QGLWidget(parent)
+{
+	factorZoom = 0.5;
+	x_angle = y_angle = z_angle = 0.0;
+	amAtX = seeAtX = seeAtY = 0.0;
+	amAtY = 5.0;
+    camX = 0.0;
+	drawgr = true;
+	drawfig = true;
+	drawax = false;//по умолчанию оси не рисуем
+    drawair = true;
+    nInds = 0;
+    nElements = 0;
+}
+
 void myGLWidget::initializeGL()
 {
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);//цвет фона
-	glClearDepth(1.0);
+	glClearDepth(1.0f);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
@@ -13,6 +29,7 @@ void myGLWidget::initializeGL()
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);//и пмодели-просмотра
 }
+
 void myGLWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -35,8 +52,6 @@ void myGLWidget::paintGL()
 		drawPoints();
 		drawAxis();//оси
 	}
-
-
 }
 
 void myGLWidget::resizeGL(int w, int h)
@@ -49,21 +64,6 @@ void myGLWidget::resizeGL(int w, int h)
 	gluPerspective(45.0f, (GLfloat)w / (GLfloat)h, 0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 }
-
-
-myGLWidget::myGLWidget(QWidget *parent) :
-QGLWidget(parent)
-{
-	factorZoom = 0.5f;
-	x_angle = y_angle = z_angle = 0.0f;
-	amAtX = seeAtX = seeAtY = 0.0f;
-	amAtY = 5.0f;
-	drawgr = 1;
-	drawfig = 1;
-	drawax = 0;//по умолчанию оси не рисуем
-}
-
-
 
 void myGLWidget::mouseMoveEvent(QMouseEvent * me)
 {
@@ -145,12 +145,11 @@ void  myGLWidget::createArea(){
 
 	koor = new GLfloat*[nInds];
 	potent = new double[nInds];
+    materials = new int[nInds];
 	for (int i = 0; i < nInds; i++){
 		koor[i] = new GLfloat[3];
 		potent[i] = 0;//обнуляем массив напряжений на случай, если напряжения не заданы
 	}
-
-
 }
 
 int myGLWidget::readFile(char * from){
@@ -175,6 +174,9 @@ int myGLWidget::readFile(char * from){
 	for (int i = 0; i < nInds; i++)
 		for (int j = 0; j < 3; j++)
 			input >> koor[i][j];
+
+	for (int i = 0; i < nInds; i++)
+		input >> materials[i];
 
 	for (int i = 0; i < nInds; i++)
 		input >> potent[i];
@@ -222,16 +224,33 @@ void myGLWidget::drawAxis()
 void myGLWidget::drawFigure(){
 	//рисуем четырехугольники
 	glBegin(GL_QUADS);
-	for (int i = nElements - 1; i >= 0; i--)
-	{//поочередно отрисовываем все элементы
-		drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1,
-			inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
-		
-		
-	}
-	//отнимаем единицу, т.к.  нумерация с 1, а не с 0
-	glEnd();
+    if( drawair )
+        for (int i = nElements - 1; i >= 0; i--)
+            drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1,
+                inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1); //отнимаем единицу, т.к.  нумерация с 1, а не с 0
+    else { // Не отрисовываем "воздушные элементы"
+        bool isAirElement;
+        int edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8;
+        for (int i = nElements - 1; i >= 0; i--) {
+            edge1 = inds[i][0] - 1;
+            edge2 = inds[i][1] - 1;
+            edge3 = inds[i][2] - 1;
+            edge4 = inds[i][3] - 1;
+            edge5 = inds[i][4] - 1;
+            edge6 = inds[i][5] - 1;
+            edge7 = inds[i][6] - 1;
+            edge8 = inds[i][7] - 1;
+            isAirElement = materials[ edge1 ] == 0 || materials[ edge2 ] == 0 
+                        || materials[ edge3 ] == 0 || materials[ edge4 ] == 0
+                        || materials[ edge5 ] == 0 || materials[ edge6 ] == 0
+                        || materials[ edge7 ] == 0 || materials[ edge8 ] == 0;
+            if( isAirElement )
+                continue;
+            drawElement(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8 );
+        }
+    }
 	
+	glEnd();
 }
 
 void myGLWidget::drawPoints(){
@@ -266,23 +285,34 @@ void myGLWidget::drawPointElement(int f1, int f2, int f3, int f4, int b1, int b2
 	glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
 	glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
 
-	
-
 	glEnd();
-
-
 }
 
-
+// TODO Текущий метод отрисовки - безумие! Смежные лини прорисовываются дважды, невидимые слои и ребра все равно рисуются
 void myGLWidget::drawGrid(){
 	//толщина 2 пикселя, черный цвет
 	glLineWidth(2.0f);
-	glColor3f(0.0f, 0.0f, 0.0f);
+    bool isGridOfAirElement;
 
-	for (int i = 0; i < nElements; i++)
+	for (int i = 0; i < nElements; i++){
+        isGridOfAirElement = false;
+        for (int vertex = 0; vertex < 8; vertex++) {
+            if( materials[ inds[i][vertex] - 1 ] == 0 ){
+                isGridOfAirElement = true;
+                break;
+            }
+        }
+
+        if( isGridOfAirElement ) {
+            if( drawair )
+                glColor3f(1.0f, 1.0f, 1.0f);
+            else
+                continue;
+        } else
+            glColor3f(0.0f, 0.0f, 0.0f);
 		drawGridElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1,
-		inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
-
+            inds[i][4] - 1, inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1);
+    }
 }
 
 void myGLWidget::drawGridElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){

@@ -378,6 +378,9 @@
        <iconset resource="opgl.qrc">
         <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QCheckBox" name="figure">
       <property name="geometry">
@@ -397,6 +400,9 @@
       <property name="icon">
        <iconset resource="opgl.qrc">
         <normaloff>:/icons/figure.png</normaloff>:/icons/figure.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QToolButton" name="exit">
@@ -451,6 +457,29 @@
       <property name="icon">
        <iconset resource="opgl.qrc">
         <normaloff>:/icons/about_author.png</normaloff>:/icons/about_author.png</iconset>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="air_part">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>320</y>
+        <width>42</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Отображать &quot;воздушные&quot; элементы</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="opgl.qrc">
+        <normaloff>:/icons/air_part.png</normaloff>:/icons/air_part.png</iconset>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

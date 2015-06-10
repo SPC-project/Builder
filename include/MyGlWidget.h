@@ -55,6 +55,7 @@ public:
 	bool      drawfig;
 	bool      drawax;
 	bool      drawdot;
+    bool      drawair;
 	bool      move_cam;
 	bool      changeNC;
 	double    minPotent;//минимальное значение напряженности
@@ -100,6 +101,7 @@ private:
 	int**     inds;//матрица элементов
 	GLfloat** koor;//матрица координат
 	double*   potent;//вектор напряжений в узлах
+    int*      materials;//вектор материалов узлов (воздух/фигура)
 
 protected:
 	void      wheelEvent(QWheelEvent* pe);

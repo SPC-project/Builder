@@ -12,9 +12,6 @@ Window::Window(){
     // Указываем явно кодировку этого файла, чтобы Qt корректно отображала символы 
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("Utf-8"));
 
-	ui.figure->setChecked(1);//чекбоксы
-	ui.grid->setChecked(1); 
-
 	Input = new QString("*.transf");//ввод по умолчанию
 
 	//добавляем кнопочки на панель инструментов
@@ -40,6 +37,7 @@ Window::Window(){
 	ui.mainToolBar->addWidget(ui.snap);
 	ui.mainToolBar->addSeparator();
 	ui.mainToolBar->addWidget(ui.figure);
+	ui.mainToolBar->addWidget(ui.air_part);
 	ui.mainToolBar->addWidget(ui.grid);
 	ui.mainToolBar->addWidget(ui.axis);
 	ui.mainToolBar->addSeparator();
@@ -55,29 +53,30 @@ Window::Window(){
 	this->setWindowTitle(trUtf8("Builder"));
 
 	//коннектим кнопочки
-	connect(ui.pr1, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.pr2, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.pr3, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.pr4, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.pr5, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.pr6, SIGNAL(clicked()), this, SLOT(getProection()));
-	connect(ui.xLeft, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.xRight, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.yLeft, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.yRight, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.zLeft, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.zRight, SIGNAL(clicked()), this, SLOT(rotate()));
-	connect(ui.grid, SIGNAL(clicked()), this, SLOT(changeMode()));
-	connect(ui.figure, SIGNAL(clicked()), this, SLOT(changeMode()));
-	connect(ui.axis, SIGNAL(clicked()), this, SLOT(changeMode()));
-	connect(ui.snap, SIGNAL(clicked()), this, SLOT(SnapShot()));
-	connect(ui.zoomP, SIGNAL(clicked()), this, SLOT(zoom()));
-	connect(ui.zoomM, SIGNAL(clicked()), this, SLOT(zoom()));
-	connect(ui.openFileTool, SIGNAL(clicked()), this, SLOT(openFile()));
-	connect(ui.openDefaultTool, SIGNAL(clicked()), this, SLOT(createGlWidget()));
-	connect(ui.exit, SIGNAL(clicked()), this, SLOT(close()));
-	connect(ui.cancel, SIGNAL(clicked()), this, SLOT(delGL()));
-	connect(ui.author, SIGNAL(clicked()), this, SLOT(showAutor()));
+	connect(ui.pr1,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.pr2,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.pr3,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.pr4,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.pr5,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.pr6,            SIGNAL(clicked()), this, SLOT(getProection())  );
+	connect(ui.xLeft,          SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.xRight,         SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.yLeft,          SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.yRight,         SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.zLeft,          SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.zRight,         SIGNAL(clicked()), this, SLOT(rotate())        );
+	connect(ui.grid,           SIGNAL(clicked()), this, SLOT(changeMode())    );
+	connect(ui.figure,         SIGNAL(clicked()), this, SLOT(changeMode())    );
+    connect(ui.air_part,       SIGNAL(clicked()), this, SLOT(changeMode())    );
+	connect(ui.axis,           SIGNAL(clicked()), this, SLOT(changeMode())    );
+	connect(ui.snap,           SIGNAL(clicked()), this, SLOT(SnapShot())      );
+	connect(ui.zoomP,          SIGNAL(clicked()), this, SLOT(zoom())          );
+	connect(ui.zoomM,          SIGNAL(clicked()), this, SLOT(zoom())          );
+	connect(ui.openFileTool,   SIGNAL(clicked()), this, SLOT(openFile())      );
+	connect(ui.openDefaultTool,SIGNAL(clicked()), this, SLOT(createGlWidget()));
+	connect(ui.exit,           SIGNAL(clicked()), this, SLOT(close())         );
+	connect(ui.cancel,         SIGNAL(clicked()), this, SLOT(delGL())         );
+	connect(ui.author,         SIGNAL(clicked()), this, SLOT(showAutor())     );
 }
 
 
@@ -236,6 +235,7 @@ void Window::getProection(){
 
 void Window::changeMode(){
 	if (glLoaded){
+        // TODO: зачем проверять перед присваиванием?
 		//выставляем флаги прорисовки
 		if (ui.grid->isChecked() != glWidget->drawgr)
 			glWidget->drawgr = ui.grid->isChecked();
@@ -245,6 +245,9 @@ void Window::changeMode(){
 
 		if (ui.axis->isChecked() != glWidget->drawax)
 			glWidget->drawax = ui.axis->isChecked();
+
+        if (ui.air_part->isChecked() != glWidget->drawair)
+            glWidget->drawair = ui.air_part->isChecked();
 
 		//if (ui.points->isChecked() != glWidget->drawdot)
 		//glWidget->drawdot = ui.points->isChecked();
