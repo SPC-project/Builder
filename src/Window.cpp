@@ -66,8 +66,8 @@ Window::Window(){
 	connect(ui.zLeft,          SIGNAL(clicked()), this, SLOT(rotate())        );
 	connect(ui.zRight,         SIGNAL(clicked()), this, SLOT(rotate())        );
 	connect(ui.grid,           SIGNAL(clicked()), this, SLOT(changeMode())    );
-	connect(ui.figure,         SIGNAL(clicked()), this, SLOT(changeMode())    );
     connect(ui.air_part,       SIGNAL(clicked()), this, SLOT(changeMode())    );
+	connect(ui.figure,         SIGNAL(clicked()), this, SLOT(changeMode())    );
 	connect(ui.axis,           SIGNAL(clicked()), this, SLOT(changeMode())    );
 	connect(ui.snap,           SIGNAL(clicked()), this, SLOT(SnapShot())      );
 	connect(ui.zoomP,          SIGNAL(clicked()), this, SLOT(zoom())          );
@@ -235,7 +235,7 @@ void Window::getProection(){
 
 void Window::changeMode(){
 	if (glLoaded){
-        // TODO: зачем проверять перед присваиванием?
+        // TODO: установить, зачем проверять перед присваиванием?
 		//выставляем флаги прорисовки
 		if (ui.grid->isChecked() != glWidget->drawgr)
 			glWidget->drawgr = ui.grid->isChecked();

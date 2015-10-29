@@ -90,40 +90,6 @@ void myGLWidget::mouseMoveEvent(QMouseEvent * me)
 	updateGL();
 }
 
-void myGLWidget::drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){
-
-	//выбираем значение цвета для данного узла   и рисуем его
-	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
-	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
-	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
-	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
-
-	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
-	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
-	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
-	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
-
-	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
-	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
-	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
-	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
-
-	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
-	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
-	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
-	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
-
-	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
-	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
-	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
-	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
-
-	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
-	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
-	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
-	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
-}
-
 void  myGLWidget::wheelEvent(QWheelEvent* pe){
 
 	//В зависимости от направления движения колесика увеличиваем/уменьшаем фигуру
@@ -227,7 +193,7 @@ void myGLWidget::drawFigure(){
     if( drawair )
         for (int i = nElements - 1; i >= 0; i--)
             drawElement(inds[i][0] - 1, inds[i][1] - 1, inds[i][2] - 1, inds[i][3] - 1, inds[i][4] - 1,
-                inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1); //отнимаем единицу, т.к.  нумерация с 1, а не с 0
+                inds[i][5] - 1, inds[i][6] - 1, inds[i][7] - 1); //отнимаем единицу, ибо нумерация с 1, а не с 0
     else { // Не отрисовываем "воздушные элементы"
         bool isAirElement;
         int edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8;
@@ -249,8 +215,42 @@ void myGLWidget::drawFigure(){
             drawElement(edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8 );
         }
     }
-	
+	// TODO Нужно как-то намечать грани фигуры в случае, если отключена сетка (drawgrid) - иначе изображение с трудом идентифицируеться
 	glEnd();
+}
+
+void myGLWidget::drawElement(int f1, int f2, int f3, int f4, int b1, int b2, int b3, int b4){
+
+	//выбираем значение цвета для данного узла   и рисуем его
+	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
+	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
+	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
+	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
+
+	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
+	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
+	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
+	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
+
+	setColor(potent[f1]);		glVertex3f(koor[f1][0], koor[f1][1], koor[f1][2]);
+	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
+	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
+	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
+
+	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
+	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
+	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
+	setColor(potent[f4]);		glVertex3f(koor[f4][0], koor[f4][1], koor[f4][2]);
+
+	setColor(potent[f2]);		glVertex3f(koor[f2][0], koor[f2][1], koor[f2][2]);
+	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
+	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
+	setColor(potent[f3]);		glVertex3f(koor[f3][0], koor[f3][1], koor[f3][2]);
+
+	setColor(potent[b1]);		glVertex3f(koor[b1][0], koor[b1][1], koor[b1][2]);
+	setColor(potent[b2]);		glVertex3f(koor[b2][0], koor[b2][1], koor[b2][2]);
+	setColor(potent[b3]);		glVertex3f(koor[b3][0], koor[b3][1], koor[b3][2]);
+	setColor(potent[b4]);		glVertex3f(koor[b4][0], koor[b4][1], koor[b4][2]);
 }
 
 void myGLWidget::drawPoints(){
@@ -305,7 +305,10 @@ void myGLWidget::drawGrid(){
 
         if( isGridOfAirElement ) {
             if( drawair )
-                glColor3f(1.0f, 1.0f, 1.0f);
+                if( drawfig )
+                    glColor3f(1.0f, 1.0f, 1.0f); // белый
+                else
+                    glColor3f(1.0f, 1.0f, 0.0f); // желтый (чтобы было видно на желтом фоне)
             else
                 continue;
         } else
