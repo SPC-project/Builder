@@ -518,3 +518,211 @@ void myGLWidget::getProection(int side){
 	updateGL();
 }
 
+// Удаление элемента - реализация Даниила Шестопалова
+//--------------------------------------------------------------------------------------------------
+void  myGLWidget::deleteElement(int n){ //хотим удалить элемент под номером f1
+	if ((temp_nElements > 0) && (n-1 < temp_nElements)&&(n > 0))
+		for (int j = 0; j < 8; j++)
+			temp_inds[n-1][j] = -1; // Просто заменяем значение его точек на -1. Удаление произойдет в функции remesh.
+
+}
+
+void  myGLWidget::deleteArea() { //пока что без входных параметров, так как непонятно, что именно мы удаляем
+	tempArea();//создаем временную рабочую область
+		
+	//Тут должна находится рабочая часть функции. Перечисление элементов что удаляем.
+
+	for (int i = 300; i < 400; i++)
+		deleteElement(i);
+
+
+
+	// Основной принцип заключается в том, что мы заменяем удаленные элементы во временном массиве индексов на -1 значения. Далее сортируем, смотрим что осталось и обновляем основные массивы
+
+	remesh();//в этой функции происходит обновление основного массива индексов. Удаление выпавших узлов, переиндексация.
+	update_main(); // обновляем основные массивы, удаляем временные. Тесно связана с функцией remesh. 
+	paintGL();//перерисовываем фигуру
+
+}
+
+void  myGLWidget::tempArea() {
+
+	//создаем временные (temp) массивы.
+	create_temp();
+
+	//Заполняем
+
+	for (int i = 0; i < temp_nElements; i++)
+		for (int j = 0; j < 8; j++)
+		{
+		temp_inds[i][j] = inds[i][j];
+		}
+
+	for (int i = 0; i < temp_nInds; i++)
+		temp_potent[i] = potent[i];
+
+	for (int i = 0; i < nInds; i++)
+		for (int j = 0; j < 3; j++)
+			temp_koor[i][j] = koor[i][j];
+
+
+}
+
+void  myGLWidget::update_main() {
+
+
+	//очищаем старый массив элементов
+	for (int i = 0; i < nElements; i++)
+		delete inds[i];
+	delete inds;
+
+	for (int i = 0; i < nInds; i++)
+		delete koor[i];
+	delete koor;
+
+	delete potent;
+
+
+	//создаем массивs
+	inds = new int*[temp_nElements];
+	for (int i = 0; i < temp_nElements; i++)
+		inds[i] = new int[8];
+
+	koor = new GLfloat*[temp_nInds];
+	potent = new double[temp_nInds];
+
+	for (int i = 0; i < temp_nInds; i++){
+		koor[i] = new GLfloat[3];
+		potent[i] = 0;
+	}
+
+	//записываем в них данные из temp. заполнение основного массива на основе новой индексации. основан на связи старой и новой индексации
+	for (int i = 0; i < temp_nElements; i++)
+		for (int j = 0; j < 8; j++)
+			inds[i][j] = temp_A[temp_inds[i][j] - 1] + 1;
+		
+	for (int i = 0; i < temp_nInds; i++)
+		potent[i] = temp_potent[temp_B[i]];
+
+	for (int i = 0; i < temp_nInds; i++)
+		for (int j = 0; j < 3; j++)
+			koor[i][j] = temp_koor[temp_B[i]][j];
+
+	//обновляем число элементов, узлов
+	nElements = temp_nElements;
+	nInds = temp_nInds;
+
+	//удаляем temp массивы
+	delete_temp();
+
+
+}
+void  myGLWidget::create_temp(){
+
+	temp_nElements = nElements;
+	temp_nInds = nInds;
+
+	temp_inds = new int*[temp_nElements];
+	for (int i = 0; i < temp_nElements; i++)
+		temp_inds[i] = new int[8];
+
+
+	temp_koor = new GLfloat*[nInds];
+	temp_potent = new double[nInds];
+	for (int i = 0; i < nInds; i++){
+		temp_koor[i] = new GLfloat[3];
+		temp_potent[i] = 0;//обнуляем массив напряжений на случай, если напряжения не заданы
+	}
+
+	temp_A = new int[temp_nInds];
+	temp_B = new int[temp_nInds];
+
+}
+
+void  myGLWidget::delete_temp() {
+
+	for (int i = 0; i < nElements; i++)
+		delete[] temp_inds[i];
+	delete[] temp_inds;
+
+	for (int i = 0; i < nInds; i++)
+		delete temp_koor[i];
+	delete temp_koor;
+
+	delete temp_potent;
+
+	delete temp_A;
+	delete temp_B;
+}
+
+void  myGLWidget::remesh(){
+
+	for (int i = 0; i < nInds; i++){ // два важных массива индексов.
+		temp_A[i] = i; // Индекс А содержит нетронутую индексацию. Среди элементов которой содержатся выпавшие узлы. Содержит в себе соответствующий новый номер узла, содержащийся в массиве B
+		temp_B[i] = -1; // Обновленная индексация. По умолчанию считается, что все узлы выпали. Далее в этой функции проходит замена тех узлов, что не выпали на соответствующие им индексы, после упорядочивание и переиндексация. Содержит в себе соответствующий номер из нетронутой индексации. 
+	}//дает возможность переходить от новой индексации к старой, и наоборот
+
+
+	//Сортировка, основываясь на том, что строка удаленного элемента, в матрице узлов, содержит значения -1. По этому достаточно проверить только 1 элемент. Можно усложнить проверку: при наличии хотя бы одной ячейки со значением -1 строка удаляется.
+	//------------------------------------------------------------------------------------------------------
+	int n = 0; // кол-во удаленных строк
+	for (int i = 0; (i + n) < temp_nElements; i++)
+	{
+		if (temp_inds[i+n][1] != -1) 
+			for (int j = 0; j < 8; j++){
+			temp_inds[i][j] = temp_inds[i + n][j];
+			temp_B[temp_inds[i][j] - 1] = temp_inds[i][j] - 1;
+			}
+		else {
+			i--;
+			n++;
+		}
+	}
+	temp_nElements = temp_nElements - n; //уменьшаем конечное число элементов. 
+
+	//---------------------------------------------------------------------
+
+
+
+
+	//Упорядочиваем индексацию. Что бы не было "пустых" номеров узлов		
+	n = 0; // число выпавших узлов
+	for (int i = 0; (i+n)< temp_nInds; i++)	
+	{
+		if (temp_B[i+n] != -1){ // загадочная часть, даже описать сложно. Как ни будь откомментирую
+			temp_B[i] = temp_B[i + n]; 
+			temp_A[temp_B[i]] = i; 
+		}
+		else {
+			temp_A[i+n] = -1;
+			n++;
+			i--;
+		}
+	}
+	temp_nInds = temp_nInds-n;
+
+}
+
+// нужно ровнять функцию сохранения. Создавать файл через интерфейс и записывать данные по алгоритму из текущей функции
+void  myGLWidget::saveFile(char * to) 
+{
+    std::ofstream f;
+	f.open("datasave.transf", std::ios::trunc);;//Открываем файл
+	f << nElements << ' ';
+	f << nInds << std::endl;
+
+	for (int i = 0; i < nElements; i++){	
+		for (int j = 0; j < 8; j++)
+			f << inds[i][j]<< ' ';
+		f << std::endl;
+	}
+	for (int i = 0; i < nInds; i++){
+		for (int j = 0; j < 3; j++)
+			f << koor[i][j]<< ' ';
+		f << std::endl;
+	}
+	for (int i = 0; i < nInds; i++)
+		f << potent[i]<< ' ';
+
+	f.close();//Закрываем файл
+}
