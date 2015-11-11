@@ -62,11 +62,19 @@ public:
 	double    maxPotent;//максимальное значение напряженности
 	double    gradColorStep;//шаг напряженность соответствующий 1 тону цвета
 
+    void      deleteArea();//общая функция для удаления нескольких узлов и перестройки фигуры. Пока не доделана
+	void      deleteElement(int n); //хотим удалить элемент под номером f1
+	void      remesh(); //Сортировка temp массива индексов, удаление выпавших узлов.
+	void      update_main(); //Обновление основных массивов. 
+	void      create_temp();
+	void      tempArea(); // общая функция инициализации temp массивов
+	void      delete_temp(); // удаление temp массивов
 
 	public slots:
 	void      setStandartLook();//вернуться в стандартную позицию
 	void      getProection(int side);//повернуть фигуру одной из проекций 1-6
-	int       readFile(char * from);
+	int       readFile(char* from);
+    void      saveFile(char* to);
 
 
 private:
@@ -102,6 +110,14 @@ private:
 	GLfloat** koor;//матрица координат
 	double*   potent;//вектор напряжений в узлах
     int*      materials;//вектор материалов узлов (воздух/фигура)
+
+    int       temp_nElements;
+	int**     temp_inds; //Временная матрица элементов. Удобна для дальнейшего развития функционала проги
+	int       temp_nInds;
+	GLfloat** temp_koor;
+	double*   temp_potent;
+	int*      temp_A;
+	int*      temp_B;
 
 protected:
 	void      wheelEvent(QWheelEvent* pe);
