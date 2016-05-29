@@ -1,7 +1,5 @@
-#include "MyGlWidget.h"
 #include <cmath>
-#include <fstream>
-
+#include "MyGlWidget.h"
 
 myGLWidget::myGLWidget(QWidget *parent) : QGLWidget(parent)
 {

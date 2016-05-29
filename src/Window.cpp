@@ -17,7 +17,10 @@ Window::Window(){
 
 	Input = new QString("*.transf");//ввод по умолчанию
 
-	//добавляем кнопочки на панель инструментов
+	// Комбинации клавиш быстрого доступа
+	QShortcut* openFile = new QShortcut(QKeySequence("Ctrl+O"), this);
+	QShortcut* quitProgram = new QShortcut(QKeySequence("Ctrl+Q"), this);
+	// Добавляем кнопочки на панель инструментов
 	ui.mainToolBar->addWidget(ui.openFileTool);
 	ui.mainToolBar->addWidget(ui.openDefaultTool);
 	ui.mainToolBar->addSeparator();
@@ -55,7 +58,10 @@ Window::Window(){
 	this->setFixedSize(947, 680);
 	this->setWindowTitle(trUtf8("Builder"));
 
-	//коннектим кнопочки
+	// Shortcut's 
+	connect(openFile,    SIGNAL(activated()), this, SLOT(openFile()));
+	connect(quitProgram, SIGNAL(activated()), this, SLOT(close()));
+	// Связываем кнопки с их функционалом
 	connect(ui.pr1,            SIGNAL(clicked()), this, SLOT(getProection())  );
 	connect(ui.pr2,            SIGNAL(clicked()), this, SLOT(getProection())  );
 	connect(ui.pr3,            SIGNAL(clicked()), this, SLOT(getProection())  );
